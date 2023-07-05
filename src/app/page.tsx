@@ -1,95 +1,144 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client"
 
-export default function Home() {
+import { LikeOutlined, UserOutlined } from '@ant-design/icons';
+import type { ProSettings } from '@ant-design/pro-components';
+import {
+  PageContainer,
+  ProLayout,
+  SettingDrawer,
+} from '@ant-design/pro-components';
+import { useState } from 'react';
+import {defaultProps} from './_defaultProps'
+import Image from 'next/image';
+import Card from './Card/page';
+import FormDisabledDemo from './Form/page';
+import Link from 'next/link';
+
+
+const Register =() => {
+    const [pathname, setPathname] = useState('/welcome');
+  
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
+    <div
+      id="test-pro-layout"
+      style={{
+        height: '100vh',
+      }}
+    >
+      <ProLayout
+        {...defaultProps}
+        location={{
+          pathname,
+        }}
+        menuFooterRender={(props) => {
+          return (
+            <a
+            style={{
+              lineHeight: '48rpx',
+              display: 'flex',
+              height: 48,
+              color: 'rgba(255, 255, 255, 0.65)',
+              alignItems: 'center',
+            }}
+            href="https://preview.pro.ant.design/dashboard/analysis"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noreferrer"
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
+              <Image
+    alt="pro-logo"
+src=""
+    width={16}
+    height={16}
+    style={{
+      margin: '0 16px',
+      marginInlineEnd: 10,
+    }}
+  />
+  {!props?.collapsed && 'Preview Pro'}
+</a>
+          );
+        }}
+        onMenuHeaderClick={(e) => console.log(e)}
+        menuItemRender={(item, dom) => (
+          <a
+            onClick={() => {
+              setPathname(item.path || '/welcome');
+            }}
+          >
+            {dom}
           </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
+        )}
+        avatarProps={{
+          icon: <UserOutlined />,
+        }}
+        
+      >
+       <PageContainer
+          
+          tabList={[
+            {
+              tab: 'Vendor',
+              key: 'base',
+            },
+            {
+              tab: 'PR',
+              key: 'info',
+            },
+            {
+                tab: 'Purchse',
+                key: 'purchase',
+              },
+              {
+                tab: 'RFQ',
+                key: 'rfq',
+              },
+              {
+                tab: 'Purchase order',
+                key: 'purchase_order',
+              },
+              {
+                tab: 'ASN',
+                key: 'asn',
+              },
+              {
+                tab: 'Gate',
+                key: 'gate',
+              },
+              {
+                tab: 'MIGO',
+                key: 'migo',
+              },
+              {
+                tab: 'OTD',
+                key: 'otd',
+              },
+              {
+                tab: 'Contact Us',
+                key: 'contact_us',
+              },
+              {
+                tab: 'System',
+                key: 'system',
+              },
+          ]}
+          
+          
+          
         >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+          <div
+            style={{
+              height: '120vh',
+              minHeight: 600,
+            }}
+          >
+           <Card/>
+            {/* <FormDisabledDemo/> */}
+          </div>
+        </PageContainer>
+      </ProLayout>
+     
+    </div>
+  );
+};
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+export default Register;
