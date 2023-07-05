@@ -1,148 +1,128 @@
 "use client"
 import React, { useState } from 'react';
-import {  Menu, Progress } from 'antd';
-import Link from 'next/link';
+import { Form, Input, Checkbox, Button, Card } from 'antd';
 
-const { SubMenu } = Menu;
+const { Item } = Form;
 
-interface FormValues {
-  dealerDetails: string;
-  registeredAddress: string;
-  contactPersonDetails: string;
-  bankDetails: string;
-  godownDetails: string;
-  nearestWarehouse: string;
-  propertyDetails: string;
-  registrationDetails: string;
-  financialInformation: string;
-  taxInformation: string;
-  fertilizerSale: string;
-  agroInputs: string;
-  salesCommitment: string;
-  businessOperations: string;
-  currentDealership: string;
-  documents: string;
+interface CompanyDetailsFormProps {
+  onFinish: (values: any) => void;
 }
 
-const RightBoxForm: React.FC = () => {
-  const [currentMenu, setCurrentMenu] = useState<string>('dealerDetails');
-  const [values, setValues] = useState<FormValues>({
-    dealerDetails: '',
-    registeredAddress: '',
-    contactPersonDetails: '',
-    bankDetails: '',
-    godownDetails: '',
-    nearestWarehouse: '',
-    propertyDetails: '',
-    registrationDetails: '',
-    financialInformation: '',
-    taxInformation: '',
-    fertilizerSale: '',
-    agroInputs: '',
-    salesCommitment: '',
-    businessOperations: '',
-    currentDealership: '',
-    documents: '',
-  });
+const CompanyDetailsForm: React.FC<CompanyDetailsFormProps> = ({ onFinish }) => {
+  const [isOpen, setIsOpen] = useState(true);
 
-  const handleMenuClick = (e: any) => {
-    setCurrentMenu(e.key);
+  const toggleCard = () => {
+    setIsOpen(!isOpen);
   };
 
-  const handleFormSubmit = (values: FormValues) => {
-    setValues(values);
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
   };
-
-  const calculateProgress = () => {
-    const totalFields = Object.keys(values).length;
-    const completedFields = Object.values(values).filter((value) => value !== '').length;
-    const progressPercentage = (completedFields / totalFields) * 100;
-    return Math.round(progressPercentage);
-  };
-
-  const getTitleByMenuKey = (menuKey: string) => {
-    switch (menuKey) {
-      case 'dealerDetails':
-        return 'Dealer Details';
-      case 'registeredAddress':
-        return 'Registered Address';
-      case 'contactPersonDetails':
-        return 'Contact Person Details';
-      case 'bankDetails':
-        return 'Bank Details';
-      case 'godownDetails':
-        return 'Godown Details';
-      case 'nearestWarehouse':
-        return 'Nearest Warehouse';
-      case 'propertyDetails':
-        return 'Details of Property of Proprietor/Partner/Firm';
-      case 'registrationDetails':
-        return 'Registration Details';
-      case 'financialInformation':
-        return 'Financial Information';
-      case 'taxInformation':
-        return 'Income Tax/ GST/Other';
-      case 'fertilizerSale':
-        return 'Fertilizer Sale';
-      case 'agroInputs':
-        return 'Agro Inputs';
-      case 'salesCommitment':
-        return 'Sales Commitment';
-      case 'businessOperations':
-        return 'Business Operations';
-      case 'currentDealership':
-        return 'Current dealership details / Fertilizer/seeds/Pesticides/Others';
-      case 'documents':
-        return 'Documents';
-      default:
-        return '';
-    }
-  };
-
-  const cardTitle = getTitleByMenuKey(currentMenu);
 
   return (
-    <div style={{ display: 'flex', height: '50vw' }}>
-     <Menu
-        mode="vertical"
-        theme="light"
-        style={{ width: 250 }}
-        selectedKeys={[currentMenu]}
-        onClick={handleMenuClick}
-      >
-        <Menu.Item
-          key="registeredAddress"
-          style={{ height: 50, background: '#9542ef', color: 'white', display: 'flex', alignItems: 'center' }}
-        >
-          <h3 style={{ margin: 10, marginRight: 9, marginTop: 30 }}>Form</h3>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Progress percent={calculateProgress()} size="small" />
+    <Card
+      title="Company Details"
+      extra={
+        <Button type="link" onClick={toggleCard}>
+          {isOpen ? 'Close' : 'Open'}
+        </Button>
+      }
+      style={{ width: '80%', display: 'flex',flexDirection:"column" }}
+      bordered={false}
+    >
+      {isOpen && (
+        <Form onFinish={onFinish} onFinishFailed={onFinishFailed} layout="vertical">
+          <Item
+            label="Company Name"
+            name="companyName"
+            rules={[{ required: true, message: 'Please enter the company name' }]}
+          >
+            <Input />
+          </Item>
+          <Item
+            label="Company Type"
+            name="companyType"
+            rules={[{ required: true, message: 'Please enter the company type' }]}
+          >
+            <Input />
+          </Item>
+          <Item
+            label="Owner Name"
+            name="ownerName"
+            rules={[{ required: true, message: 'Please enter the owner name' }]}
+          >
+            <Input />
+          </Item>
+
+          <div style={{ display: "flex", flexDirection: "row", marginBottom: "10px" }}>
+          <Item label="Company Website" name="companyWebsite" style={{ width: "20rem", marginRight: "10px" }}>
+            <Input />
+          </Item>
+          <Item
+            label="Established Year"
+            name="establishedYear"
+            rules={[{ required: true, message: 'Please enter the established year' }]}
+            style={{ width: "20rem" }}
+          >
+            <Input />
+          </Item>
           </div>
-        </Menu.Item>
-        <Menu.Item key="dealerDetails">Dealer Details </Menu.Item>
-        <Menu.Item key="registeredAddress">Registered Address</Menu.Item>
-        <Menu.Item key="contactPersonDetails">Contact Person Details</Menu.Item>
-        <Menu.Item key="bankDetails">Bank Details</Menu.Item>
-        <Menu.Item key="godownDetails">Godown Details</Menu.Item>
-        <Menu.Item key="nearestWarehouse">Nearest Warehouse</Menu.Item>
-        <Menu.Item key="propertyDetails">
-          Details of Property of Proprietor/Partner/Firm
-        </Menu.Item>
-        <Menu.Item key="registrationDetails">Registration Details</Menu.Item>
-        <Menu.Item key="financialInformation">Financial Information</Menu.Item>
-        <Menu.Item key="taxInformation">Income Tax/ GST/Other</Menu.Item>
-        <Menu.Item key="fertilizerSale">Fertilizer Sale</Menu.Item>
-        <Menu.Item key="agroInputs">Agro Inputs</Menu.Item>
-        <Menu.Item key="salesCommitment">Sales Commitment</Menu.Item>
-        <Menu.Item key="businessOperations">Business Operations</Menu.Item>
-        <Menu.Item key="currentDealership">
-          Current dealership details / Fertilizer/seeds/Pesticides/Others
-        </Menu.Item>
-        <Menu.Item key="documents">Documents</Menu.Item>
-      </Menu>
-    
-    </div>
+
+<div style={{display:"flex",flexDirection:"row"}}>
+<Item
+            label="Corporate Identification Number (CIN)"
+            name="cin"
+            rules={[{ required: true, message: 'Please enter the Corporate Identification Number (CIN)' }]}
+            style={{width:"20rem", marginRight: "10px" }}
+          >
+            <Input />
+          </Item>
+          <Item
+            label="CIN Date"
+            name="cinDate"
+            rules={[{ required: true, message: 'Please enter the CIN date' }]}
+            style={{ width: "20rem" }}
+          >
+            <Input type="date" />
+          </Item>
+
+</div>
+         <div style={{display:"flex",flexDirection:"row"}}>
+
+         <Item
+            label="Company Category"
+            name="companyCategory"
+            rules={[{ required: true, message: 'Please enter the company category' }]}
+            style={{ width:"20rem",marginRight: "10px" }}
+         >
+            <Input />
+          </Item>
+          <Item
+            label="If Existing Supplier"
+            name="ifExistingSupplier"
+            rules={[{ required: true, message: 'Please enter the company category' }]}
+            style={{ width:"20rem",marginRight: "10px" }}
+          >
+            <Input />
+
+          </Item>
+          <Item label="First Time Supplier" name="firstTimeSupplier" valuePropName="checked"
+          
+          >
+            <Checkbox style={{fontSize:"20px"}} />
+          </Item>
+         </div>
+          
+          
+          <Item>
+            <Button type="primary" htmlType="submit">
+              Next
+            </Button>
+          </Item>
+        </Form>
+      )}
+    </Card>
   );
 };
 
-export default RightBoxForm;
+export default CompanyDetailsForm;
